@@ -1,0 +1,34 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: cimg/node:18.0
+    steps:
+      - checkout
+      - run:
+          name: Instalar dependencias
+          command: npm install
+      - run:
+          name: Build
+          command: npm run build
+  test:
+    docker:
+      - image: cimg/node:18.0
+    steps:
+      - checkout
+      - run:
+          name: Instalar dependencias
+          command: npm install
+      - run:
+          name: Tests unitarios
+          command: npm test -- --watch=false
+      - run:
+          name: Tests Cypress
+          command: npm run e2e
+
+workflows:
+  build-and-test:
+    jobs:
+      - build
+      - test
